@@ -131,4 +131,12 @@ function updateCategories() {
     categoryFilter.appendChild(new Option(category, category));
   });
 }
+function populateCategories() {
+  // Populate the category filter dropdown
+  categoryFilter.innerHTML = '';
+  categoryFilter.appendChild(new Option('All Categories', 'all'));
+  categories.forEach(category => {
+    categoryFilter.appendChild(new Option(category, category));
+  });
+}
 newQuoteButton.addEventListener('click', showRandomQuote);
