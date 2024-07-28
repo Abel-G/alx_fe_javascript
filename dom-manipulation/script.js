@@ -153,8 +153,7 @@ async function fetchQuotesFromServer() {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(newQuote)   
- // Replace newQuote with the actual quote data
+      body: JSON.stringify(newQuote) // Replace newQuote with the actual quote data
     });
     const data = await response.json();
     // Simulate conflict by modifying a random quote
@@ -165,6 +164,7 @@ async function fetchQuotesFromServer() {
     console.error('Error fetching quotes from server:', error);
   }
 }
+
 async function syncQuotesToServer() {
   const serverQuotes = await fetchQuotesFromServer();
 
@@ -200,5 +200,7 @@ async function syncQuotesToServer() {
 
 // No changes needed in handleConflicts and showNotification (already asynchronous)
 
+// Add setInterval to periodically sync quotes
+setInterval(syncQuotesToServer, 5000); // Sync every 5 seconds
 
 newQuoteButton.addEventListener('click', showRandomQuote);
