@@ -146,4 +146,63 @@ function populateCategories() {
 
   });
 }
+function fetchQuotesFromServer() {
+  return fetch(SERVER_URL)
+    .then(response => response.json())
+    .then(data => {
+      // Simulate conflict by modifying a random quote
+      const randomIndex = Math.floor(Math.random() * data.length);
+      data[randomIndex].text = "Conflicting quote from server";
+      return data;
+    });
+}
+
+function syncQuotesToServer() {
+  fetchQuotesFromServer()
+    .then(serverQuotes => {
+      const localQuoteMap = quotes.reduce((map, quote) => {
+        map[quote.id] = quote;
+        return map;
+      }, {});
+
+      const serverQuoteMap = serverQuotes.reduce((map, quote) => {
+        map[quote.id] = quote;
+        return map;
+      }, {});
+
+      // Identify conflicts based on ID and update time
+      const conflicts = [];
+      for (const id in localQuoteMap) {
+        if (serverQuoteMap[id] && localQuoteMap[id].updatedAt < serverQuoteMap[id].updatedAt) {
+          conflicts.push({ local: localQuoteMap[id], server: serverQuoteMap[id] });
+        }
+      }
+
+      if (conflicts.length > 0) {
+        handleConflicts(conflicts); // Inform user and resolve conflicts
+      } else {
+        // No conflicts, update local data with server data
+        quotes = serverQuotes;
+        saveQuotesToStorage();
+        updateCategories();
+        displayQuotes(quotes);
+        showNotification('Quotes synced successfully!');
+      }
+    })
+    .catch(error => {
+      console.error('Error fetching quotes from server:', error);
+    });
+}
+
+function handleConflicts(conflicts) {
+  console.warn('Data conflicts detected:', conflicts);
+  // Implement UI element or notification to inform user about conflicts
+  // Provide options for user to choose between local and server versions
+  // Update quotes based on user choice
+}
+
+function showNotification(message) {
+  // Implement notification system to display messages to user (e.g., alert, toast)
+}
+
 newQuoteButton.addEventListener('click', showRandomQuote);
