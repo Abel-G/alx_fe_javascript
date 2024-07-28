@@ -77,5 +77,58 @@ function importFromJsonFile(event) {
   };
   fileReader.readAsText(event.target.files[0]);
 }
+function loadCategoriesFromStorage() {
+  const storedCategories = localStorage.getItem(STORAGE_KEY_CATEGORIES);
+  if (storedCategories) {
+    categories = JSON.parse(storedCategories);
+  }
+}
 
+function saveCategoriesToStorage() {
+  localStorage.setItem(STORAGE_KEY_CATEGORIES, JSON.stringify(categories));
+}
+
+function loadFilterFromStorage() {
+  const storedFilter = localStorage.getItem(STORAGE_KEY_FILTER);
+  if (storedFilter) {
+    categoryFilter.value = storedFilter;
+  }
+}
+
+function saveFilterToStorage(filter) {
+  localStorage.setItem(STORAGE_KEY_FILTER, filter);
+}
+
+function filterQuotes() {
+  const selectedCategory = categoryFilter.value;
+  saveFilterToStorage(selectedCategory);
+
+  if (selectedCategory === 'all') {
+    displayQuotes(quotes);
+  } else {
+    const filteredQuotes = quotes.filter(quote => quote.category === selectedCategory);
+    displayQuotes(filteredQuotes);
+  }
+}
+
+function displayQuotes(quotesToDisplay) {
+  quoteDisplay.innerHTML = '';
+  quotesToDisplay.forEach(quote => {
+    const quoteElement = document.createElement('p');
+    quoteElement.textContent = `"${quote.text}" - ${quote.category}`;
+    quoteDisplay.appendChild(quoteElement);
+  });
+}
+
+function updateCategories() {
+  categories = [...new Set(quotes.map(quote => quote.category))];
+  saveCategoriesToStorage();
+
+  // Populate the category filter dropdown
+  categoryFilter.innerHTML = '';
+  categoryFilter.appendChild(new Option('All Categories', 'all'));
+  categories.forEach(category => {
+    categoryFilter.appendChild(new Option(category, category));
+  });
+}
 newQuoteButton.addEventListener('click', showRandomQuote);
