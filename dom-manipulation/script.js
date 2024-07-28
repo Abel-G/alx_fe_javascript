@@ -44,5 +44,38 @@ function addQuote() {
   newQuoteText.value = '';
   newQuoteCategory.value = '';
 }
+const STORAGE_KEY = 'quotes';
+
+function loadQuotesFromStorage() {
+  const storedQuotes = localStorage.getItem(STORAGE_KEY);
+  if (storedQuotes) {
+    quotes = JSON.parse(storedQuotes);
+  }
+}
+
+function saveQuotesToStorage() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(quotes));
+}
+
+function exportQuotes() {
+  const data = new Blob([JSON.stringify(quotes)], { type: 'application/json' });
+  const url = URL.createObjectURL(data);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download   
+ = 'quotes.json';
+  link.click();
+  URL.revokeObjectURL(url);
+}
+function importFromJsonFile(event) {
+  const fileReader = new FileReader();
+  fileReader.onload = function(event) {
+    const importedQuotes = JSON.parse(event.target.result);
+    quotes.push(...importedQuotes);
+    saveQuotes();
+    alert('Quotes imported successfully!');
+  };
+  fileReader.readAsText(event.target.files[0]);
+}
 
 newQuoteButton.addEventListener('click', showRandomQuote);
