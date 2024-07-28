@@ -195,6 +195,7 @@ async function syncQuotesToServer() {
     updateCategories();
     displayQuotes(quotes);
     showNotification('Quotes synced successfully!');
+    console.log("Quotes synced with server!");
   }
 }
 
