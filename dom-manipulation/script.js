@@ -13,7 +13,9 @@ function showRandomQuote() {
   const randomQuote = quotes[randomIndex];
   quoteDisplay.innerHTML = `"${randomQuote.text}" - ${randomQuote.category}`;
 }
-
+function createAddQuoteForm() {
+  // to be used in the uture
+}
 function addQuote() {
   const newQuote = {
     text: newQuoteText.value,
