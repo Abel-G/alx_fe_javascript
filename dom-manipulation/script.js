@@ -4,18 +4,14 @@ const newQuoteText = document.getElementById('newQuoteText');
 const newQuoteCategory = document.getElementById('newQuoteCategory');
 
 let quotes = [
-    { text: 'The only way to do great work is to love what you do.', category: 'Work' },
+  { text: 'The only way to do great work is to love what you do.', category: 'Work' },
+
 ];
 
 function showRandomQuote() {
   const randomIndex = Math.floor(Math.random() * quotes.length);
   const randomQuote = quotes[randomIndex];
-  quoteDisplay.textContent = `"${randomQuote.text}" - ${randomQuote.category}`;
-}
-
-function createAddQuoteForm() {
-
-    
+  quoteDisplay.innerHTML = `"${randomQuote.text}" - ${randomQuote.category}`;
 }
 
 function addQuote() {
