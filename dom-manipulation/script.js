@@ -198,9 +198,7 @@ async function syncQuotesToServer() {
   }
 }
 
-// No changes needed in handleConflicts and showNotification (already asynchronous)
 
-// Add setInterval to periodically sync quotes
-setInterval(syncQuotesToServer, 5000); // Sync every 5 seconds
+setInterval(syncQuotesToServer, 5000);
 
 newQuoteButton.addEventListener('click', showRandomQuote);
