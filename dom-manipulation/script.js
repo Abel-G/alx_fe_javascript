@@ -132,11 +132,18 @@ function updateCategories() {
   });
 }
 function populateCategories() {
-  // Populate the category filter dropdown
+  // Clear the existing options in the dropdown
   categoryFilter.innerHTML = '';
-  categoryFilter.appendChild(new Option('All Categories', 'all'));
+  const allCategoriesOption = document.createElement('option');
+  allCategoriesOption.value = 'all';
+  allCategoriesOption.text = 'All Categories';
+  categoryFilter.appendChild(allCategoriesOption);
   categories.forEach(category => {
-    categoryFilter.appendChild(new Option(category, category));
+    const categoryOption = document.createElement('option');
+    categoryOption.value = category;
+    categoryOption.text = category;
+    categoryFilter.appendChild(categoryOption);   
+
   });
 }
 newQuoteButton.addEventListener('click', showRandomQuote);
